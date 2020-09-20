@@ -10,6 +10,7 @@ import pandas as pd
 import pyfiglet
 from pyfiglet import Figlet
 from datetime import date
+
 import twilio
 from twilio.rest import Client
 
@@ -152,6 +153,10 @@ while True:
         print(BOLD + DARKCYAN + "Choose from 220 rooms and suites with spacious walk in closets, Italian marble bathrooms, teak floors and oak wood desks.\n Breathe easy with state of the art air purification systems that assure air quality on par with global best standards." + END)
         print()
         print(BOLD + YELLOW + "Relax. Replenish. Rejuvenate.\n Our spa, swimming pool and fitness centre in hotel provide the perfect\n escape from a busy schedule and the rush of a bustling city." + END)
+        print()
+        in_date = date(int(e[:4]), int(e[5:7]), int(e[8:]))                  # yyyy-mm-dd
+        out_date = date(int(f[:4]), int(f[5:7]), int(f[8:]))
+        n = out_date - in_date        
 
 
 
@@ -162,20 +167,10 @@ while True:
         
         xy = pd.DataFrame()
         xy["Rooms"] = ["Single","Double","Triple","Quad","Queen Deluxe","King Deluxe","Twin Deluxe", "Double-double Deluxe", "Luxury Master Suite"]
-        # xy["1. Single"] = [1000]
-        # xy["2. Double"] = [2000]
-        # xy["3. Triple"] = [3000]
-        # xy["4. Quad"] = [4000]
-        # xy["5. Queen Deluxe"] = [4500]
-        # xy["6. King Deluxe"] = [4750]
-        # xy["7. Twin Deluxe"] = [4850]
-        # xy["8. Double-double Deluxe"] = [5000]
-        # xy["9. Luxury Master Suite"] = [5500]
 
-        #rooms = pd.DataFrame(xy.T)
         xy["Price(INR/Night)"] = [1000,2000,3000,4000,4500,4750,4850,5000,5500]
         xy.index += 1
-        #del rooms[0]
+        
         print("-"*50)
         print()
         print(xy)
@@ -185,43 +180,25 @@ while True:
         print()
         print()
 
-        
-        if ch == 1: 
-            print("You have opted for single bed room. CHARGES: Rs. 1000 PER NIGHT")
-            pay = 1000
-        elif ch == 2:
-            print("You have opted for double bed room. CHARGES: Rs. 2000 PER NIGHT")
-            pay = 2000
-        elif ch == 3:
-            print("You have opted for triple bed room. CHARGES: Rs. 3000 PER NIGHT")
-            pay = 3000
-        elif ch == 4:
-            print("You have opted for quad bed room. CHARGES: Rs. 4000 PER NIGHT")
-            pay = 4000
-        elif ch == 5:
-            print("You have opted for Queen Deluxe bed room. CHARGES: Rs. 4500 PER NIGHT")
-            pay = 4500
-        elif ch == 6:
-            print("You have opted for King Deluxe bed room. CHARGES: Rs. 4750 PER NIGHT")
-            pay = 4750
-        elif ch == 7:
-            print("You have opted for Twin Deluxe bed room. CHARGES: Rs. 4850 PER NIGHT")
-            pay = 4850
-        elif ch == 8:
-            print("You have opted for Double-double Deluxe bed room. CHARGES: Rs. 5000 PER NIGHT")
-            pay = 5000
-        elif ch == 9:
-            print("You have opted for Luxury Master Suite bed room. CHARGES: Rs. 5500 PER NIGHT")
-            pay = 5500
 
-        print()
-        in_date = date(int(e[:4]), int(e[5:7]), int(e[8:]))                  # yyyy-mm-dd
-        out_date = date(int(f[:4]), int(f[5:7]), int(f[8:]))
-        n = out_date - in_date
-        print(BLUE + "Number of days spent in the hotel: " + str(n.days) + END)
-        print()
-        room_rent = n.days*pay                                                                                   # ROOM RENT BILL
-        print(BOLD + CYAN + UNDERLINE + "Your total room rent is Rs. " + str(room_rent) + END)
+
+        room_rent = 0                                                   
+        for rom in list(xy.index):
+            if ch in list(xy.index) and ch == rom:
+                room_rent += n.days*xy.iat[rom-1, 1]
+                print("You have opted for " + xy.iat[rom-1, 0] + " Bedroom." + " CHARGES: Rs. " + str(xy.iat[rom-1, 1]) + " PER NIGHT.")
+                print()
+                #print(room_rent)
+                print(BLUE + "Number of days spent in the hotel: " + str(n.days) + END)
+                print()
+                # room_rent = n.days*pay                                                                                   # ROOM RENT BILL
+                print(BOLD + CYAN + UNDERLINE + "Your total room rent is Rs. " + str(room_rent) + END)
+                
+
+
+
+        
+ 
         print()
         print()
         print()
@@ -266,67 +243,17 @@ while True:
                 
                 while True:
                     bvg_ch = int(input("Please enter your choice: "))
-                    if bvg_ch == 1:
-                        bvg_q = int(input("Please enter the quantity"))
-                        bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
-                        purchases.append(bvg.iat[bvg_ch-1,0])
-                        costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
-                        qq1.append(bvg_q)
 
-                    elif bvg_ch == 2:
-                        bvg_q = int(input("Please enter the quantity"))
-                        bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
-                        purchases.append(bvg.iat[bvg_ch-1,0])
-                        costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
-                        qq1.append(bvg_q)
-                    elif bvg_ch == 3:
-                        bvg_q = int(input("Please enter the quantity"))
-                        bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
-                        purchases.append(bvg.iat[bvg_ch-1,0])
-                        costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
-                        qq1.append(bvg_q)
-                    elif bvg_ch == 4:
-                        bvg_q = int(input("Please enter the quantity"))
-                        bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
-                        purchases.append(bvg.iat[bvg_ch-1,0])
-                        costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
-                        qq1.append(bvg_q)
-                    elif bvg_ch == 5:
-                        bvg_q = int(input("Please enter the quantity"))
-                        bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
-                        purchases.append(bvg.iat[bvg_ch-1,0])
-                        costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
-                        qq1.append(bvg_q)
-                    elif bvg_ch == 6:
-                        bvg_q = int(input("Please enter the quantity"))
-                        bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
-                        purchases.append(bvg.iat[bvg_ch-1,0])
-                        costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
-                        qq1.append(bvg_q)
-                    elif bvg_ch == 7:
-                        bvg_q = int(input("Please enter the quantity"))
-                        bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
-                        purchases.append(bvg.iat[bvg_ch-1,0])
-                        costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
-                        qq1.append(bvg_q)
-                    elif bvg_ch == 8:
-                        bvg_q = int(input("Please enter the quantity"))
-                        bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
-                        purchases.append(bvg.iat[bvg_ch-1,0])
-                        costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
-                        qq1.append(bvg_q)
-                    elif bvg_ch == 9:
-                        bvg_q = int(input("Please enter the quantity"))
-                        bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
-                        purchases.append(bvg.iat[bvg_ch-1,0])
-                        costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
-                        qq1.append(bvg_q)
-                    elif bvg_ch == 10:
-                        bvg_q = int(input("Please enter the quantity"))
-                        bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
-                        purchases.append(bvg.iat[bvg_ch-1,0])
-                        costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
-                        qq1.append(bvg_q)
+                    for bb in list(bvg.index):
+                        if bvg_ch in list(bvg.index) and bvg_ch == bb:
+                            bvg_q = int(input("Please enter the quantity"))
+                            bvg_cost += bvg.iat[bvg_ch-1,1]*bvg_q
+                            purchases.append(bvg.iat[bvg_ch-1,0])
+                            costs.append(bvg.iat[bvg_ch-1,1]*bvg_q)
+                            qq1.append(bvg_q)
+
+
+
 
                     bvg_more = input("Do you want to have any other beverage also ? (y/n)")
                     if bvg_more == "n" or bvg_more == "N":
@@ -354,73 +281,18 @@ while True:
                 
                 while True:
                     fod_ch = int(input("Please enter your choice: "))
-                    if fod_ch == 1:
-                        fod_q = int(input("Please enter the quantity"))
-                        fod_cost += fod.iat[fod_ch-1,1]*fod_q
-                        purchases.append(fod.iat[fod_ch-1,0])
-                        costs.append(fod.iat[fod_ch-1,1]*fod_q)
-                        qq1.append(fod_q)                        
-                    elif fod_ch == 2:
-                        fod_q = int(input("Please enter the quantity"))
-                        fod_cost += fod.iat[fod_ch-1,1]*fod_q
-                        purchases.append(fod.iat[fod_ch-1,0])
-                        costs.append(fod.iat[fod_ch-1,1]*fod_q)  
-                        qq1.append(fod_q)                      
-                    elif fod_ch == 3:
-                        fod_q = int(input("Please enter the quantity"))
-                        fod_cost += fod.iat[fod_ch-1,1]*fod_q
-                        purchases.append(fod.iat[fod_ch-1,0])
-                        costs.append(fod.iat[fod_ch-1,1]*fod_q)
-                        qq1.append(fod_q)
 
-                    elif fod_ch == 4:
-                        fod_q = int(input("Please enter the quantity"))
-                        fod_cost += fod.iat[fod_ch-1,1]*fod_q
-                        purchases.append(fod.iat[fod_ch-1,0])
-                        costs.append(fod.iat[fod_ch-1,1]*fod_q)
-                        qq1.append(fod_q)
+                    for cc in list(fod.index):
+                        if fod_ch in list(fod.index) and fod_ch == cc:
+                            fod_q = int(input("Please enter the quantity"))
+                            fod_cost += fod.iat[fod_ch-1,1]*fod_q
+                            purchases.append(fod.iat[fod_ch-1,0])
+                            costs.append(fod.iat[fod_ch-1,1]*fod_q)
+                            qq1.append(fod_q)
 
-                    elif fod_ch == 5:
-                        fod_q = int(input("Please enter the quantity"))
-                        fod_cost += fod.iat[fod_ch-1,1]*fod_q
-                        purchases.append(fod.iat[fod_ch-1,0])
-                        costs.append(fod.iat[fod_ch-1,1]*fod_q)
-                        qq1.append(fod_q)
 
-                    elif fod_ch == 6:
-                        fod_q = int(input("Please enter the quantity"))
-                        fod_cost += fod.iat[fod_ch-1,1]*fod_q
-                        purchases.append(fod.iat[fod_ch-1,0])
-                        costs.append(fod.iat[fod_ch-1,1]*fod_q)
-                        qq1.append(fod_q)
+                    
 
-                    elif fod_ch == 7:
-                        fod_q = int(input("Please enter the quantity"))
-                        fod_cost += fod.iat[fod_ch-1,1]*fod_q
-                        purchases.append(fod.iat[fod_ch-1,0])
-                        costs.append(fod.iat[fod_ch-1,1]*fod_q)
-                        qq1.append(fod_q)
-
-                    elif fod_ch == 8:
-                        fod_q = int(input("Please enter the quantity"))
-                        fod_cost += fod.iat[fod_ch-1,1]*fod_q
-                        purchases.append(fod.iat[fod_ch-1,0])
-                        costs.append(fod.iat[fod_ch-1,1]*fod_q)
-                        qq1.append(fod_q)
-
-                    elif fod_ch == 9:
-                        fod_q = int(input("Please enter the quantity"))
-                        fod_cost += fod.iat[fod_ch-1,1]*fod_q
-                        purchases.append(fod.iat[fod_ch-1,0])
-                        costs.append(fod.iat[fod_ch-1,1]*fod_q)
-                        qq1.append(fod_q)
-
-                    elif fod_ch == 10:
-                        fod_q = int(input("Please enter the quantity"))
-                        fod_cost += fod.iat[fod_ch-1,1]*fod_q
-                        purchases.append(fod.iat[fod_ch-1,0])
-                        costs.append(fod.iat[fod_ch-1,1]*fod_q)
-                        qq1.append(fod_q)
 
                     fod_more = input("Do you want to have any other dish also ? (y/n)")
                     if fod_more == "n" or fod_more == "N":
@@ -438,7 +310,11 @@ while True:
         print()
         print(BOLD + "Your expenses in the restaurant are: " + END)
         print()
+        print("-"*60)
+        print()
         print(prev1)
+        print()
+        print("-"*60)
         rest_bill = bvg_cost +  fod_cost                                                # food bill
 
         print()
@@ -528,7 +404,11 @@ while True:
         print()
         print(BOLD + CYAN + "Your expenses in laundry are: " + END)
         print()
+        print("-"*60)
+        print()
         print(prev2)
+        print()
+        print("-"*60)
         print()
         print()
         print(BOLD + CYAN + UNDERLINE + "Your laundry bill is " + str(lau_cost) + END)
