@@ -31,7 +31,6 @@ END = '\033[0m'
 
 
 
-
 hotel_name = Figlet(font='jazmine')
 print(hotel_name.renderText('RADISON \t BLUE\n HOTEL\t AND\t LODGING'))
 print()
@@ -56,6 +55,11 @@ c = "N/A"
 d = "N/A"
 e = input("Enter your CHECK IN DATE in the format (yyyy-mm-dd): ")
 f = input("Enter your CHECK OUT DATE in the format (yyyy-mm-dd): ")
+
+ph_nums = []
+mob_num = 0000000000
+
+
 print()
 print()
 room_rent = 100
@@ -63,6 +67,11 @@ rest_bill = 0
 lau_cost = 0
 game_bill = 0
 grand_total = 0
+
+prev1 = pd.DataFrame()
+prev2 = pd.DataFrame()
+prev3 = pd.DataFrame()
+
 print()
 
 
@@ -111,7 +120,7 @@ while True:
         curs.execute("select Phone_no from custom_details")
         print()
         rec = curs.fetchall()
-        ph_nums = []
+        # ph_nums = []
         for row in rec:
             ph_nums.append(row[0])
         if mob_num in ph_nums:
@@ -119,7 +128,7 @@ while True:
             print(DARKCYAN + "Welcome Back, " + a + " !!" + END)
             discount = 15/100
         else:
-            discount = 1
+            discount = 0
 
         det = (a,b,c,d,e,f,mob_num)
         print(BOLD + GREEN + "Name: " + a)
@@ -302,7 +311,7 @@ while True:
             else:
                 break
 
-        prev1 = pd.DataFrame()
+        #prev1 = pd.DataFrame()
         prev1["Items"] = purchases
         prev1["Quantity"] = qq1
         prev1["Cost"] = costs
@@ -396,7 +405,8 @@ while True:
         # mens_rate = [100,300,350,250,300,500,110,120]
         # womens_clothing = list(lau_women.iloc[:,0])      # directly creating a list from dataframe 
         # womens_rate = list(lau_women.iloc[:,1])
-        prev2 = pd.DataFrame()
+        
+        #prev2 = pd.DataFrame()
         prev2["Clothes_for_Laundry"] = gg
         prev2["Quantity"] = qq
         prev2["Expenditure"] = ff
@@ -425,7 +435,7 @@ while True:
     elif choice == 5:                                                         # CHOICE 5 CLUB AND GAME BILL
         custom_fig7 = Figlet(font='univers')
         print(custom_fig7.renderText('CLUB  & GAMES'))
-        prev3 = pd.DataFrame()
+        #prev3 = pd.DataFrame()
         xx = []
         yy = []
         zz = []
@@ -458,19 +468,35 @@ while True:
             if more_play == "y" or more_play == "Y":
                 continue
             else:
+                print()
+                prev3["Games Played"] = xx
+                prev3["Hours Played"] = yy
+                prev3["Expenditure"] = zz
+                prev3.index += 1
+                print()
+                print(BOLD + CYAN + "Your Expenses in Club & Games are: " + END)
+                print()
+                print("-"*50)
+                print()
+                print(prev3)
+                print()
+                print("-"*50)
+
+                print()
+                print()
                 print(BOLD + CYAN + UNDERLINE + "Your total Game & Club bill is: " + str(game_bill) + END)
                 break
 
-        print()
-        prev3["Games Played"] = xx
-        prev3["Hours Played"] = yy
-        prev3["Expenditure"] = zz
-        print()
-        print(BOLD + CYAN + "Your Expenses in Club & Games are: " + END)
-        print()
-        print(prev3)
+        # print()
+        # prev3["Games Played"] = xx
+        # prev3["Hours Played"] = yy
+        # prev3["Expenditure"] = zz
+        # print()
+        # print(BOLD + CYAN + "Your Expenses in Club & Games are: " + END)
+        # print()
+        # print(prev3)
 
-        print()
+        # print()
         print()
     
 
@@ -497,17 +523,30 @@ while True:
         print()
         print(CYAN + "1. Restaurant Expenses: " + END)
         print()
-        print(prev1)
+
+        if prev1.empty:
+            print(BOLD + RED + "No Expenditure Here..!!" + END)
+        else:
+            print(prev1)
         print()
         print()
         print(CYAN + "2. Laundry Expenses: " + END)
         print()
-        print(prev2)
+        
+        if prev2.empty:
+            print(BOLD + RED + "No Expenditure Here..!!" + END)
+        else:
+            print(prev2)
         print()
         print()
         print(CYAN + "3. Club & Games Expenses: " + END)
         print()
-        print(prev3)
+
+        if prev3.empty:
+            print(BOLD + RED + "No Expenditure Here..!!" + END)
+        else:
+            print(prev3)
+        
         print()
         print()
         print(PURPLE + "Total Bill: " + END)
